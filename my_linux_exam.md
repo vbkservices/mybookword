@@ -255,4 +255,3 @@ ll --full-time | grep -v targeted >>/root/mytext.txt #old
 ll --full-time  /etc/selinux/ >> /root/mytext.txt #new
 ```
 ---
-###### 王進男
