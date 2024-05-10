@@ -101,7 +101,37 @@ mv $(find / -user examuser 2> /dev/null) /root/examuser
 ```
 ## 6.(10%)建立一般帳號也可以執行的指令 (全部的指令請放置到 /usr/local/bin 目錄下)
 - A.做一個名為 myip 的指令，這個指令會透過 ifconfig 的功能，顯示出 ens3 這張網卡的 IP (只要 IP 就好喔！)。例如 IP 為 192.168.251.12 時，則輸入 myip 這個指令，螢幕只會輸出 192.168.251.12 的意思。
+```
+vim /usr/local/bin/mypi
+##  mymsg.sh  的內容 ##
+#! /bin/bash
+ifconfig | grep "inet " | awk 'NR==1 {print $2}'
+```
+```
+## 測試 ##
+chmod a+x /usr/local/bin/mypi
+/usr/local/bin/mypi
+```
 - B.建立一個名為 myerr 的指令，這個指令會將『 echo "I am error message" 』這個訊息傳輸到 standard error output 去！ 亦即當執行『 myerr 』時，會在螢幕上出現 I am error message，但是執行『 myerr 2> /dev/null 』時，螢幕不會有任何訊息的輸出。
+```
+vim /usr/local/bin/myerr
+##  mymsg.sh  的內容 ##
+#! /bin/bash
+echo "I am error message" 1>&2
+```
+```
+## 測試 ##
+chmod a+x /usr/local/bin/myerr
+/usr/local/bin/myerr 2> /dev/null
+```
 ## 7.(10%)建立一個名為 /root/split 的目錄，進行如下的行為：
 - A.將 /etc/services 複製到本目錄下
+```
+mkdir /root/split
+cp /etc/services /root/split/
+```
 - B.假設 services 容量太大了，現在請以 100K 為單位，將該檔案拆解成 file_aa, file_ab, file_ac.. 等檔名的檔案， 每個檔案最大為 100K (請自行 man split 去處理)
+```
+cd  /root/split
+split -b 100K services "file_"
+```
