@@ -1,11 +1,13 @@
 # TA 第九章作業
 ## 1.(20%)分析『本日』登錄檔資訊的相關設定，重點在實做與練習正規表示法：
 - A. 寫一隻名為 /usr/local/sbin/getmesg 的腳本，內容會使用 grep 取得 /var/log/messages 在『本日』的登錄資訊。 要注意的是，我們假設系統語系為英文，抓日期的方式可以從『 date 』這個指令搭配相關參數去處理。 當你用 root 的身份執行 getmesg 時，螢幕會顯示類似如下的資訊：
+- 
   ![image](https://github.com/vbkservices/mybookword/assets/97799165/ff2fa48c-1528-48b5-972b-c84a4524d603)
 - B. 寫一隻名為 /usr/local/sbin/chsel 的腳本，這個腳本會修改 /etc/selinux/config 檔案的內容， 會將行首出現『SELINUX=??? 』那一行(一整行喔)資料，強制替換成『SELINUX=enforcing』或『SELINUX=permissive』， 且該檔案會被直接修改。執行方式會像這樣 (需要 root 權限)：
 
   ![image](https://github.com/vbkservices/mybookword/assets/97799165/9b8cad0b-66ce-4efb-a130-84843430e0a1)
 - C. 寫一隻名為 /usr/local/bin/chupper 的腳本，當執行該腳本之後，會把 /etc/hosts 抓出來變成大寫字元的內容。 使用一般帳號也可以執行這個腳本，執行的結果會有點像這樣：
+  
   ![image](https://github.com/vbkservices/mybookword/assets/97799165/82e0bb38-ad52-4c2d-a74d-417164b1801b)
 ## 2.(10%)建立一隻名為 /usr/local/bin/myprocess 的腳本，腳本內容主要為：
 - A.第一行一定要宣告 shell 為 bash 才行；
