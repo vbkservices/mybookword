@@ -1,7 +1,7 @@
 # TA 第九章作業
 ## 1.(20%)分析『本日』登錄檔資訊的相關設定，重點在實做與練習正規表示法：
 - A. 寫一隻名為 /usr/local/sbin/getmesg 的腳本，內容會使用 grep 取得 /var/log/messages 在『本日』的登錄資訊。 要注意的是，我們假設系統語系為英文，抓日期的方式可以從『 date 』這個指令搭配相關參數去處理。 當你用 root 的身份執行 getmesg 時，螢幕會顯示類似如下的資訊：
-- 
+  
   ![image](https://github.com/vbkservices/mybookword/assets/97799165/ff2fa48c-1528-48b5-972b-c84a4524d603)
 - B. 寫一隻名為 /usr/local/sbin/chsel 的腳本，這個腳本會修改 /etc/selinux/config 檔案的內容， 會將行首出現『SELINUX=??? 』那一行(一整行喔)資料，強制替換成『SELINUX=enforcing』或『SELINUX=permissive』， 且該檔案會被直接修改。執行方式會像這樣 (需要 root 權限)：
 
@@ -41,7 +41,7 @@
   - 離開 shell script，並回傳 0 的數值。
 - G.這階段執行結果會有點像這樣：
   
-![image](https://github.com/vbkservices/mybookword/assets/97799165/43b18301-44ec-49e3-8cc3-39592a9090d2)
+  ![image](https://github.com/vbkservices/mybookword/assets/97799165/43b18301-44ec-49e3-8cc3-39592a9090d2)
 - H.若該字串不為指令，則使用 locate 後面加 /${1}$ 的正規表示法 (locate 要支援正規表示法，必須要輸入特定的選項 請自行 man locate 查到正確的選項支援)，然後依據 locate 之後的回傳值處理後續工作
   - 若回傳值 (為 0) 顯示該字串其實具有相同的檔名，則使用 ls -ld 將檔名全部列出，然後以回傳值 0 離開程式
   - 若回傳值 (不為 0) 顯示該字串並不為檔名，則顯示『no this filename』，然後以回傳值 10 離開程式
