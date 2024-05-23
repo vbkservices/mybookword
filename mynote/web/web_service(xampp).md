@@ -1,16 +1,19 @@
 # web 練習
 ### 1. 第一步 架設小型web伺服器
-- 透過這個網址[我的雲端硬碟](https://drive.google.com/drive/u/0/folders/1bM9d7HkuBCHYqAQ-YkT-scbv4TfrZxM4) 下載xmapp的zip來解壓縮
-- 解壓縮完之後先在資料內點擊setup_xampp來啟用xampp，如圖
-![image](https://github.com/vbkservices/mybookword/assets/97799165/8f64c13c-22cc-472a-bcb1-196a921b62ed)
-- 在之後再資料內點擊xampp-control來啟動xampp介面，如圖
-![image](https://github.com/vbkservices/mybookword/assets/97799165/46c8c7fc-9ad0-4b89-b80d-41bf53c95fb3)
+- 透過這個網址[我的雲端硬碟](https://drive.google.com/drive/u/0/folders/1bM9d7HkuBCHYqAQ-YkT-scbv4TfrZxM4) 下載xmapp的exe
+- 再載完之後就直接執行到這個畫面
+  
+![image](https://github.com/vbkservices/mybookword/assets/97799165/83426dbd-3874-4711-9b7d-89e9a71f2f92)
+- 接這就把Mysql以及phpmyadmin打勾剩餘的取消就能下一步到完成了(注意:完成後它會沒有詢問就直接重開機)
+- 安裝之後再C:\xampp點擊xampp-control來啟動xampp介面，如圖
+![image](https://github.com/vbkservices/mybookword/assets/97799165/63817332-4f5b-40ad-be55-ed08eb89c099)
+
 - 在點擊介面的apache以及mysql的start按鈕來測試是否能啟動，如圖(系統會問你是否允許放行防火牆就直接允許就好)
 ![image](https://github.com/vbkservices/mybookword/assets/97799165/dd802eac-dfd8-40c3-becd-0df0384c38c4)
 - 接著更改apache的目錄位置(只要先改html檔案放置的位置)，先stop apache的服務，接著點擊config，在點擊Apache(httpd.conf)
   ![image](https://github.com/vbkservices/mybookword/assets/97799165/0d42d2cd-1fce-4790-afb4-4417c4ae79cb)
 - 在點擊介面的apache以及mysql的start按鈕來測試是否能啟動，如圖(系統會問你是否允許放行防火牆就直接允許就好)
-- 開啟檔案後再[ctrl+F]找htdocs，的內容改成你的資料夾位置
+- 開啟檔案後再[ctrl+F]找htdocs，內容改成你的資料夾位置(你的可能會跟我不一樣)
   - DocumentRoot "C:/Users/ken/Downloads/xampp/htdocs"
   - <Directory "C:/Users/ken/Downloads/xampp/htdocs">
     
