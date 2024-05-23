@@ -1,7 +1,7 @@
 # web 練習
 ### 1. 第一步 架設小型web伺服器
 - 透過這個網址[我的雲端硬碟](https://drive.google.com/drive/u/0/folders/1bM9d7HkuBCHYqAQ-YkT-scbv4TfrZxM4) 下載xmapp的zip來解壓縮
-- 解壓縮完之後仙再資料內點擊setup_xampp來啟用xampp，如圖
+- 解壓縮完之後先在資料內點擊setup_xampp來啟用xampp，如圖
 ![image](https://github.com/vbkservices/mybookword/assets/97799165/8f64c13c-22cc-472a-bcb1-196a921b62ed)
 - 在之後再資料內點擊xampp-control來啟動xampp介面，如圖
 ![image](https://github.com/vbkservices/mybookword/assets/97799165/46c8c7fc-9ad0-4b89-b80d-41bf53c95fb3)
