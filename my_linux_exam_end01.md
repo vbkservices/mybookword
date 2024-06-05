@@ -4,112 +4,83 @@
 **這個系統預設的 root 密碼為 myCentOS8，預設的 student 密碼為 mystdgo，是可以直接登入的，無須救援 root 密碼。 這個系統需要的是一些正確的設定，以符合系統的運作！**
 
 **0. 不是題目：請使用 vbird_book_setup_ip 設定好你的學號資料。**
-
 ---
-
 ### **一、系統初始化設定**
-
-
 **A. 我需要每次開機都可以預設的進入純文字界面而非現行的圖形界面，可以節省許多不必要的資源浪費。**
-
-
-
     ● 在系統自己開機後，預設會跑進純文字界面，沒有圖形界面的意思。
     ● 你在操作時，依舊可以『暫時』切換到圖形界面，沒有特別要求你一定要在文字界面答題。
     
 ### **解答**
-
-
-
-
-    第一步驟 
-        systemctl get-default
-	    systemctl set-default multi-user.target
-
+```
+        systemctl get-default #查看預設值
+	systemctl set-default multi-user.target #將文字界面設定成預設值
+```
 **如果要暫時切換到圖形介面，利用底下指令(不影響上述設定)**
-    
-        systemctl isolate graphical.target
-        
-
-
+```    
+        systemctl isolate graphical.target #立即切換成圖形界面
+```
 ---
-
-
 **B. 請設定好這部主機的網路參數成為如下狀態 (全對才給分)：**
-
-
-
-    ● 刪除原有的網路連線名稱，建立名為『 mynetwork 』的連線名稱，且使用到可對外的乙太網路界面。
-    ● 需要開機就自動啟動這個連線
-    ● 網路參數的設定方式為手動設定
-    ● 網際網路位址 IP address 為： 192.168.251.XXX (XXX 為上課時，老師給予的號碼)
-    ● 子網路遮罩 netmask 為： 255.255.255.0
-    ● 通訊閘 Gateway 為： 192.168.251.254
-    ● 領域名稱伺服器 DNS server 位址為： 172.16.200.254 以及 120.114.100.1 這兩個
-    ● 主機名稱：請設定為 wwwXXX.book.vbird (其中 XXX 為上課時，老師給予的號碼)
-
+- 刪除原有的網路連線名稱，建立名為『 mynetwork 』的連線名稱，且使用到可對外的乙太網路界面。
+- 需要開機就自動啟動這個連線
+- 網路參數的設定方式為手動設定
+- 網際網路位址 IP address 為： 192.168.251.XXX (XXX 為上課時，老師給予的號碼)
+- 子網路遮罩 netmask 為： 255.255.255.0
+- 通訊閘 Gateway 為： 192.168.251.254
+- 領域名稱伺服器 DNS server 位址為： 172.16.200.254 以及 120.114.100.1 這兩個
+- 主機名稱：請設定為 wwwXXX.book.vbird (其中 XXX 為上課時，老師給予的號碼)
 ### **解答**
-
-
-
-    第一步驟 刪除原有的網路連線名稱
-    
+     第一步驟 刪除原有的網路連線名稱
+     
         nmcli connection show (查看目前網卡有哪些)
         nmcli connection delete ens3
-    
+	
     第二步驟 新增網路卡 (建立名為『 mynetwork 』的連線名稱)
     
         nmcli connection add  con-name mynetwork ifname ens3 type ethernet
-        
-    第三步驟 設定網卡
+	
+    第三步驟 設定網卡    
     
         nmcli connection modify mynetwork  ipv4.address 192.168.251.XXX/24 \
         ipv4.gateway 192.168.251.254 ipv4.dns 172.16.200.254,120.114.100.1 \
-        autoconnect yes ipv4.method manual
-        
-    第四步驟 啟動該網卡
+        ipv4.method manual
+	
+    第四步驟 啟動該網卡    
     
         nmcli connection up mynetwork
         nmcli connection show (查看網卡是否啟動成功)
         nmcli connetcion show mynetwork | grep ipv4(查看網卡是否設定正確)
+	
+    第五步驟 設定主機名稱    
     
-    第五步驟 設定主機名稱
-    
-        hostnamectl set-hostname wwwXXX.book.vbird
+        hostnamectl hostname wwwXXX.book.vbird
         hostname
-
-
 ---
-
-
 **C. 針對 YUM 的軟體倉儲設定，你有底下的兩組軟體倉儲位址，請設定好所需要的環境 (全對才給分)：**
 
 
-    ● http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/AppStream/x86_64/os/
-    ● http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/BaseOS/x86_64/os/
+- 軟體倉儲名稱為『myapp』，URL 在：
+  『http://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os』
+- 軟體倉儲名稱為『mybase』，URL 在：
+  『http://download.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os』
     
 ### **解答**
 
-
-
     自行設計一個倉儲
-    vim /etc/yum.repos.d/dic.repo (預設是沒有vim的先利用vi)
+    vim /etc/yum.repos.d/myrepo.repo (預設是沒有vim的先利用vi)
     
-    [AppStream]
-    name = AppStream
-    baseurl = http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/AppStream/x86_64/os/
+    [myapp]
+    name = myapp
+    baseurl = http://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os
     gpgcheck = 0
     enabled = 1
     
-    [BaseOS]
-    name = BaseOS
-    baseurl = http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/BaseOS/x86_64/os/
+    [mybase]
+    name = mybase
+    baseurl = http://download.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os
     gpgcheck = 0
     enabled = 1
 **完成後存檔離開**
-
-    
-
 
 ---
 
@@ -121,9 +92,7 @@
     ● 請使用網路校時 (chronyd) 的方式，使用貴校 ntp.ksu.edu.tw 作為伺服器，主動更新你的系統時間。 且系統啟動之後，會持續網路校時以取得最正確的時間。(若貴校並無 NTP 伺服器，則以 time.stdtime.gov.tw 作為來源)
     
 ### **解答**
-
-
-
+```
     第一步驟 改回台北的時區與時間
     
         timedatectl set-timezone Asia/Taipei 更改台北時區時間
@@ -131,17 +100,20 @@
         
     第二步驟 網路校時 (chronyd) 的方式，使用貴校 ntp.ksu.edu.tw 作為伺服器
     
-        systemctl status chronyd (先查看這系統有沒有這個服務)
+        rpm -ql chrony (先查看這系統有沒有這個服務)
         yum install -y chrony (沒有就安裝)
         systemctl start chronyd (啟動)
         systemctl enable chronyd (開機啟動)
         systemctl status chronyd (觀察)
         vim /etc/chrony.conf (進入網路校時功能)
         先將預設的pool.....註解
-        server ntp.ksu.edu.tw iburst (設定題目需要的伺服器)
+        server ntp.ksu.edu.tw iburst 
+	server time.stdtime.gov.tw iburst 
+        (設定題目需要的伺服器)
         存檔離開:wq
+	systemctl restart chronyd
         chronyc sources (如果沒有更新到設定檔等待個幾秒在執行一次該指令即可)
-
+```
 
 
 ---
@@ -149,15 +121,12 @@
 
 **E. 系統的自動更新機制：**
 
-
     i. 請至少升級核心 (kernel) 到最新版本，且升級完畢後，需要重新開機為宜
     ii. 這部主機需要作為未來開發軟體之用，因此需要安裝一個『 RPM 開發工具 』的軟體群組，請安裝他。
-    iii. 請設定每天凌晨 3 點自動背景進行全系統更新。
+    iii. 請設定每天凌晨 1:30 排程自動進行『核心升級』的動作 (僅核心升級，不升級其他軟體)
     
 ### **解答**
-
-
-
+```
     第一步驟 升級核心 (kernel) 到最新版本
     
         yum update kernel -y
@@ -171,47 +140,28 @@
     第三步驟 設定每天凌晨 3 點自動背景進行全系統更新
     
         vim /etc/crontab
-        0  3  *  * *  root  yum -y update
+        30  1  *  * *  root  yum -y update
         分 時 日 月 周 使用者 指令
- 
-    
+``` 
 ---
-
 ### **二、 帳號與權限控管方面的問題，包括新建帳號、帳號相關權限設定等**
-
-
 **A. 管理員的一般帳號設定：**
-
-
-    ● 請讓 student 可以順利使用自己的密碼操作 sudo 指令
-    
+- 請讓 student 可以順利使用自己的密碼操作 sudo 指令   
 ### **解答**
-
-
-
-    第一個步驟
-    
+```
+    第一個步驟    
         visudo
         /root 搜尋按下[n] 三次
         會看到有一個root ALL=(ALL) ALL
         在這底下加入
         student ALL=(ALL) ALL
         :wq存檔離開
-        
- 
-
+```        
 ---
-
-
 **B. 帳號鎖定功能：**
-
-
     ● 有個名為 alex 的帳號，他的密碼為 mygodhehe ，這個帳號有點怪異，因此身為管理員的你，得要將該帳號暫時鎖定。
-    ● 意思是說，這個帳號的所有資源都不變，但是該帳號無法順利使用密碼登入的意思(密碼鎖定)
-    
+    ● 意思是說，這個帳號的所有資源都不變，但是該帳號無法順利使用密碼登入的意思(密碼鎖定)    
 ### **解答**
-
-
 
     第一步驟 暫時鎖定該帳號
 
