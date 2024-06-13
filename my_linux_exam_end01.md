@@ -134,7 +134,7 @@ E. 系統的自動更新機制：
     第三步驟 設定每天凌晨 3 點自動背景進行全系統更新
     
         vim /etc/crontab
-        30  1  *  * *  root  yum -y update
+        30  1  *  * *  root  yum -y update kernel 
         分 時 日 月 周 使用者 指令
 ``` 
 ---
