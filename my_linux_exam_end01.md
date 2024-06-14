@@ -613,7 +613,8 @@ A. 打包檔案的格式錯誤問題：
     
         ll /root/
         mv /root/mybackup /root/mybackup.tar.xz (將檔案更改承xz壓縮檔)
-        
+        or 或是
+        cat /root/mybackup > /root/mybackup.tar.xz
     第二步驟 建立所需資料夾
         
         mkdir /srv/testing/
