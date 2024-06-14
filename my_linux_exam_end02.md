@@ -23,39 +23,41 @@ A. 系統救援 - 1 ：核心相關資料錯誤造成的問題
  
      ● 原因：因為要測試核心開機功能，結果不小心將 initramfs 檔案刪除掉了，所以應該是無法順利開機。
      ● 建議救援方式：使用原版光碟處理，請進入系統救援的模式，並依據系統既有的核心版本，將 initramfs 重建
-     ● 注意：(1)重建時，應考慮 grub2 的原本設定檔 (可能會在哪裡？)，以找到正確的檔名，方可順利成功開機喔。 (2)你可以使用任何一個 CentOS 8.x 的光碟做救援，但是需要注意不同的核心版本的問題！
+     ● 注意：(1)重建時，應考慮 grub2 的原本設定檔 (可能會在哪裡？)，以找到正確的檔名，方可順利成功開機喔。 (2)你可以使用任何一個 rockylinux 9.x 的光碟做救援，但是需要注意不同的核心版本的問題！
  
  ### 解答
 
 
  
 ### 第一步驟
-	關閉機器 > 選擇期末考作業系統 > 下面選擇光碟開機 > 選擇centos8的版本 > 
-	選擇開機順序為光碟在硬碟 > 即可啟動開機進入安裝模式
+	關閉機器 > 選擇期末考作業系統 > 下面選擇光碟開機 > 選擇rockylinux 9.X 的版本 > 
+	選擇開機順序為光碟在硬碟 > 即可啟動開機進入安裝模式 
 
 ### 第二步驟
 
-    進入後選擇第三個Troubleshooting > 在選擇第二個Rescue a CentOS Linux system
- 	> 按下1安裝 > 在按enter
+    進入後選擇第三個Troubleshooting > 在選擇第三個Troubleshooting  > 在選擇第二個Rescue a Rocky system
+ 	> 按下1安裝 > 在按enter > Please press ENTER to get a shell:時 > 輸入 chroot /mnt/sysroot 進入救援系統
 
 ### 第三步驟
-
-    cp /boot/initramfs-4.18.0-147.el8.86_64.img /mnt/sysimage/boot/
-    chroot /mnt/sysimage
-	cd /boot
-    mv initramfs-4.18.0-147.el8.86_64.img initramfs -4.18.0-147.el8.86_64.img.raw
-	dracut -v initramfs-4.18.0-147.el8.86_64.img 4.18.0-147.18.86_64
-	touch /.autorelabel
-	ls -la / 
+       ### 此動作是方便操作而做的動作，因此此處是非必要的操作 ###
+       cp /boot/initramfs-4.18.0-147.el8.86_64.img /mnt/sysimage/boot/
+       chroot /mnt/sysimagell    
+       cd /boot
+       mv initramfs-4.18.0-147.el8.86_64.img initramfs-4.18.0-147.el8.86_64.img.raw
+      ####################################################### 
+       chroot /mnt/sysimagell    ## 若是前面動作沒做的話，這邊要先做一次該指令
+       dracut -v initramfs-4.18.0-147.el8.86_64.img 4.18.0-147.18.86_64
+       touch /.autorelabel
+       ls -la / 
 ---
 **B. 系統救援 - 1 ：核心相關資料錯誤造成的問題**
 
-     ● 原因：因為幫用戶設定屬性，結果不小心『可能』修改到 root 這個帳號的相關屬性資料。
-     ● 救援恢復的要求： (1)root 密碼恢復到 myCentOS8；(2)root 登入時可順利取得 bash shell 。
+- 原因：因為幫用戶設定屬性，結果不小心『可能』修改到 root 這個帳號的相關屬性資料。
+- 救援恢復的要求： (1)root 密碼恢復到 myRockyL9；(2)root 登入時可順利取得 bash shell 。
 
 ### 解答
-    echo myCentOS8 | passwd --stdin root
-	usermod -s /bin/bash root
+      echo myRockyL9 | passwd --stdin root
+      usermod -s /bin/bash root
 ---
 C. 系統救援 - 3 ：LVM 隨便刪除造成的錯誤
      ● 原因：在發生此錯誤之前，似乎曾經將系統的 LVM swap 刪除，是否如此造成系統錯誤還不得而之。
@@ -88,21 +90,21 @@ C. 系統救援 - 3 ：LVM 隨便刪除造成的錯誤
 
 ### 二、系統初始化功能：
 A. 針對 YUM 的軟體倉儲設定，你有底下的兩組軟體倉儲位址，請設定好所需要的環境 (全對才給分)：
-    ● http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/AppStream/x86_64/os/
-    ● http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/BaseOS/x86_64/os/
+- http://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os
+- http://download.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os
 ### 解答
     自行設計一個倉儲
     vim /etc/yum.repos.d/dic.repo
     
-    [AppStream]
-    name = AppStream
-    baseurl = http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/AppStream/x86_64/os/
+    [myapp]
+    name = myapp
+    baseurl = http://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os
     gpgcheck = 0
     enabled = 1
     
     [BaseOS]
     name = BaseOS
-    baseurl = http://ftp.ksu.edu.tw/FTP/Linux/CentOS/8/BaseOS/x86_64/os/
+    baseurl = http://download.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os
     gpgcheck = 0
     enabled = 1
 完成後存檔離開
@@ -281,7 +283,7 @@ C. LVM 的建立與 VDO 的應用
         parted /dev/vda print (觀察partition是什麼分割模式)
         
     第二步驟 新建LVM磁碟
-    
+    ## 舊版本 ##  
         gdisk  /dev/vda
         新增
         n
@@ -294,7 +296,16 @@ C. LVM 的建立與 VDO 的應用
         Y
         更新 partprobe
         lsblk (查看是否有新磁碟)
-        
+    ## 新版本 ##     
+        fdisk  /dev/vda
+        新增
+        n
+        [enter]
+        [enter]
+        [enter]
+        30 (LVM的代號)
+	 w
+        lsblk (查看是否有新磁碟)
     第三步驟 建立LVM
     
         pvcreate /dev/vda6
@@ -309,19 +320,17 @@ C. LVM 的建立與 VDO 的應用
 
 ![](https://i.imgur.com/AluqkXE.png)
 
-
- 
-
     第五步驟 建立LV
     
-        lvcreate -l 100%VG -n thelv thevg
-![](https://i.imgur.com/lyvXsY4.png)
+        #舊版本 lvcreate -l 100%VG -n thelv thevg
+        #新版本 lvcreate -l 100%VG --vdo --name thelv --compression y --deduplication y --virtualsize 20G thevg
 
         lvdisplay /dev/thevg/thelv
-![](https://i.imgur.com/T10dtq2.png)
+        ![image](https://github.com/vbkservices/mybookword/assets/97799165/c8554cf5-0b1f-4c69-88cc-a5ef73596dd4)
 
 
 
+   ### #舊版本 ###
     第六步驟 安裝VDO
  
          yum install vdo kmod-kvdo
@@ -329,12 +338,12 @@ C. LVM 的建立與 VDO 的應用
          systemctl enabled vdo
          systemctl status vdo (查看服務有無在運作且是enable狀態)
     
-    --------------------------------------------
-    
     第七步驟 建立VDO
     
          vdo create --name=thevdo --vdoLogicalSize=20G \
          --device=/dev/thevg/thelv --deduplication enabled --compression enabled
+    ##############
+    ---
     
     第八步驟 查看VDO是否建立成功
          
