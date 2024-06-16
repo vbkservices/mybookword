@@ -278,25 +278,30 @@ C. LVM 的建立與 VDO 的應用
     ● 此裝置開機後會立刻掛載到 /data/vmdata 目錄下
     
 ### 解答
-    第一步驟
-    
-        parted /dev/vda print (觀察partition是什麼分割模式)
-        
-    第二步驟 新建LVM磁碟
-    ## 舊版本 ##  
-        gdisk  /dev/vda
-        新增
-        n
-        [enter]
-        [enter]
-        [enter]
-        8e00 (LVM的代號)
-        p
-        w
-        Y
-        更新 partprobe
-        lsblk (查看是否有新磁碟)
-    ## 新版本 ##     
+```
+## 新版本(centos) ##  
+第一步驟     
+parted /dev/vda print (觀察partition是什麼分割模式)
+
+第二步驟 新建LVM磁碟
+
+gdisk  /dev/vda
+新增
+n
+[enter]
+[enter]
+[enter]
+8e00 (LVM的代號)
+p
+w
+Y
+更新 partprobe
+lsblk (查看是否有新磁碟)
+```
+```
+## 新版本(rocky9) ##   
+第一步驟    
+  
         fdisk  /dev/vda
         新增
         n
@@ -306,63 +311,64 @@ C. LVM 的建立與 VDO 的應用
         30 (LVM的代號)
 	 w
         lsblk (查看是否有新磁碟)
-    第三步驟 建立LVM
+第二步驟 建立LVM
     
         pvcreate /dev/vda6
         pvscan
     
-    第四步驟 建立PE
+第三步驟 建立PE
     
         vgcreate -s 8M thevg /dev/vda6
         vgscan
         vgdisplay thevg(查看VG容量)
  
-
+```
 ![](https://i.imgur.com/AluqkXE.png)
-
-    第五步驟 建立LV
-    
-        #舊版本 lvcreate -l 100%VG -n thelv thevg
-        #新版本 lvcreate -l 100%VG --vdo --name thelv --compression y --deduplication y --virtualsize 20G thevg
+```
+第四步驟 建立LV
+        #舊版本(centos8) lvcreate -l 100%VG -n thelv thevg
+        #新版本(rocky9)  lvcreate -l 100%VG --vdo --name thelv --compression y --deduplication y --virtualsize 20G thevg
 
         lvdisplay /dev/thevg/thelv
-        ![image](https://github.com/vbkservices/mybookword/assets/97799165/c8554cf5-0b1f-4c69-88cc-a5ef73596dd4)
+```
+![image](https://github.com/vbkservices/mybookword/assets/97799165/c8554cf5-0b1f-4c69-88cc-a5ef73596dd4)
 
 
-
-   ### #舊版本 ###
-    第六步驟 安裝VDO
+```
+### #舊版本(centos) ###
+    安裝VDO
  
-         yum install vdo kmod-kvdo
+         yum install vdo kmod-kvdo lvm2
          systemctl restart vdo
          systemctl enabled vdo
          systemctl status vdo (查看服務有無在運作且是enable狀態)
     
-    第七步驟 建立VDO
+    建立VDO
     
          vdo create --name=thevdo --vdoLogicalSize=20G \
          --device=/dev/thevg/thelv --deduplication enabled --compression enabled
     ##############
+```
     ---
-    
-    第八步驟 查看VDO是否建立成功
+```    
+第五步驟 查看VDO是否建立成功
          
          vdostats --human-readable
-
+```
 ![](https://i.imgur.com/WFeFwiM.png)
 
 
-    第九步驟 將VDO格式化為XFS
+    第六步驟 將VDO格式化為XFS
     
         mkfs.xfs /dev/mapper/thevdo
         
-    第十步驟 裝置開機後會立刻掛載到 /data/vmdata
+    第七步驟 裝置開機後會立刻掛載到 /data/vmdata
     
         mkdir /data
         mkdir /data/vmdata (建立題目要求掛載目錄)
         
         vim /etc/fstab (最後一行加入VDO掛載)
-    /dev/mapper/thevdo /data/vmdata xfs defaults,x-systemd.requires=vdo.service 0 0
+       /dev/mapper/thevdo /data/vmdata xfs defaults,x-systemd.requires=vdo.service 0 0
     
         mount -a (全部掛載)
         df -Th (查看VDO掛載到/data/vmdata有無成功)
